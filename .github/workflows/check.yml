@@ -1,0 +1,48 @@
+name: push and check the code
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    ennvironment:
+      name: testing
+    env:
+      DATABASE_URL: ${{secrets.DATABASE_URL}}
+      JWT_SECRET: ${{secrets.JWT_SECRET}}
+      JWT_ALGORITHM: ${{secrets.JWT_ALGORITHM}}
+      REDIS_HOST: ${{secrets.REDIS_HOST}}
+      REDIS_PORT: ${{secrets.REDIS_PORT}}
+      REDIS_PASSWORD: ${{secrets.REDIS_PASSWORD}}
+      MAIL_USERNAME: ${{secrets.MAIL_USERNAME}}
+      MAIL_PASSWORD: ${{secrets.MAIL_PASSWORD}}
+      MAIL_SERVER: ${{secrets.MAIL_SERVER}}
+      MAIL_PORT: ${{secrets.MAIL_PORT}}
+      MAIL_FROM: ${{secrets.MAIL_FROM}}
+      MAIL_FROM_NAME: ${{secrets.MAIL_FROM_NAME}}
+      DOMAIN: ${{secrets.DOMAIN}}
+
+  runs-on: ubuntu-latest
+  steps:
+    - name: pulling the git repo
+      uses: actions/checkout@v2
+
+    - name: Install python version 3.10.5
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.10.5"
+
+    - name: update pip
+      run: python -m pip install --upgrade pip
+    - name: install all dependencies
+      run: pip install -r requirements.txt
+
+    - name: Install Postman CLI
+      run: curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+    - name: Login to Postman CLI
+      run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
+    - name: Run API tests
+      run: |
+        postman collection run "37747161-db4b8ca4-d875-47c5-8f52-01d3e50100ec" -e "37747161-33216785-2b8e-44d2-91c8-798f4a4cc43d"
+        # Lint your API using Postman CLI
+        postman api lint e3d80311-f1a3-4987-8f4c-627c78c2ef38
+    
