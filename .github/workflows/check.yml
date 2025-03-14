@@ -37,7 +37,9 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Running the backend server
-        run: uvicorn src:app --port 5000
+        run: uvicorn src:app --port 5000 & # & --> this will run the server in background
+      - name: wait for the backend server to start
+        run: sleep 5 # wait for the server to start before running tests
 
       - name: Install Postman CLI
         run: curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
