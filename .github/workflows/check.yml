@@ -36,13 +36,16 @@ jobs:
       - name: install all dependencies
         run: pip install -r requirements.txt
 
+      - name: Running the backend server
+        run: uvicorn src:app --port 5000
+
       - name: Install Postman CLI
         run: curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
       - name: Login to Postman CLI
         run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
       - name: Run API tests
         run: |
-          postman collection run "37747161-db4b8ca4-d875-47c5-8f52-01d3e50100ec" -e "37747161-33216785-2b8e-44d2-91c8-798f4a4cc43d"
+          postman collection run "37747161-db4b8ca4-d875-47c5-8f52-01d3e50100ec" -e "37747161-935a215a-f632-40ab-8c76-d9da3aba5465"
           # Lint your API using Postman CLI
           postman api lint e3d80311-f1a3-4987-8f4c-627c78c2ef38
     
