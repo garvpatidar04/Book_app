@@ -40,7 +40,7 @@ register_error_handler(app)
 register_middleware(app)
 
 @app.get("/")
-def root():
+async def root():
     """
     default for render.com"""
 
