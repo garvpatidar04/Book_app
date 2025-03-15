@@ -62,3 +62,20 @@ class UserService:
         await session.commit()
 
         return user
+    
+    async def delete_user(self, email, session: AsyncSession):
+        """
+        Implement this method to update user details in the database
+        Args:
+            session(AsyncSession): sqlmodel async session
+            user_data_dict(dict): User data to be updated
+        Returns:
+            Updated User object"""
+        
+        user_to_delete = await self.get_user_by_email(email, session)
+        if user_to_delete is not None:
+            await session.delete(user_to_delete)
+            await session.commit()
+            return {}
+        else:
+            return None

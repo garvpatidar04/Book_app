@@ -257,3 +257,16 @@ async def send_mail(emails: EmailModel, background_task: BackgroundTasks):
     background_task.add_task(send_email, emails, subject, html)
 
     return {"message": "Email sent successfully"}
+
+@user_routes.delete("/delete_me", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_user(
+    user = Depends(get_current_user), _: bool = Depends(role_checker), session:AsyncSession = Depends(get_session)
+    ):
+    """Deletes a user"""
+    email = user.email
+    print("delete info")
+    print(user)
+    if email is None:
+        raise UserNotFound()
+    await user_service.delete_user(email, session)
+    return {}

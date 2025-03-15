@@ -39,14 +39,14 @@ app = FastAPI(
 register_error_handler(app)
 register_middleware(app)
 
+app.include_router(books_route, prefix=f"{version_prefix}/books", tags=['books'])
+app.include_router(user_routes, prefix=f"{version_prefix}/auth", tags=['User'])
+app.include_router(review_routes, prefix=f"{version_prefix}/review", tags=['Review'])
+app.include_router(tags_router, prefix=f"{version_prefix}/tags", tags=["tags"]) 
+
 @app.get("/")
 async def root():
     """
     default for render.com"""
 
     return {'hello, this my app BooKStore'}
-
-app.include_router(books_route, prefix=f"{version_prefix}/books", tags=['books'])
-app.include_router(user_routes, prefix=f"{version_prefix}/auth", tags=['User'])
-app.include_router(review_routes, prefix=f"{version_prefix}/review", tags=['Review'])
-app.include_router(tags_router, prefix=f"{version_prefix}/tags", tags=["tags"]) 
