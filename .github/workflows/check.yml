@@ -50,4 +50,3 @@ jobs:
           postman collection run "37747161-db4b8ca4-d875-47c5-8f52-01d3e50100ec" -e "37747161-935a215a-f632-40ab-8c76-d9da3aba5465"
           # Lint your API using Postman CLI
           postman api lint e3d80311-f1a3-4987-8f4c-627c78c2ef38
-    
